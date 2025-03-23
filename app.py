@@ -112,7 +112,7 @@ def load_data():
         return pd.read_csv(DATA_FILE)
     else:
         # Define an empty dataframe with the required columns
-        return pd.DataFrame(columns=["match_id", "player", "team_index", "rank", "reward", "entry_fee", "net_earning"])
+        return pd.DataFrame(columns=["match_id", "update_date","player", "team_index", "rank", "reward", "entry_fee", "net_earning"])
 
 def save_match_data(new_data):
     if os.path.exists(DATA_FILE):
@@ -211,6 +211,9 @@ if page == "Enter Match Data":
                     # a * (1 - ratio^k) / (1 - ratio) = half_prize.
                     first_term = half_prize * (1 - ratio) / (1 - ratio ** k)
 
+                    # Capture the current date and time
+                    now_t = datetime.now()
+                    formatted_datetime = now_t.strftime("%Y-%m-%d %H:%M:%S")
                     # Create rows with computed rewards
                     rows = []
                     for entry in team_data:
@@ -218,6 +221,7 @@ if page == "Enter Match Data":
                         net = reward - entry_fee
                         rows.append({
                             "match_id": match_id,
+                            "update_date" : formatted_datetime,
                             "player": entry["player"],
                             "team_index": entry["team_index"],
                             "rank": entry["rank"],
@@ -247,8 +251,11 @@ elif page == "View Cumulative Earnings":
         st.write("### Earnings per Player")
         st.dataframe(cum)
 
-        st.write("### Detailed Match Data")
-        st.dataframe(df)
+        st.write("### View Match Data")
+        unique_matches1 = df['match_id'].unique().tolist()
+        view_match = st.multiselect("Select one/more match",unique_matches1,default= unique_matches1[0])
+        df1 = df[df['match_id'].isin(view_match)]
+        st.dataframe(df1)
 
 # -------------------------------
 # Page 3: Manage Match Data
