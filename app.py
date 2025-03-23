@@ -149,7 +149,7 @@ def get_reward(rank_str, first_term, ratio):
 # -------------------------------
 # Sidebar Navigation
 # -------------------------------
-page = st.sidebar.selectbox("Navigation", ["Enter Match Data", "View Cumulative Earnings", "Manage Match Data"])
+page = st.sidebar.selectbox("Navigation", ["Enter Match Data", "View Cumulative Earnings", "Delete Wrong Entry"])
 
 # -------------------------------
 # Page 1: Enter Match Data
@@ -240,91 +240,91 @@ if page == "Enter Match Data":
             # -------------------------
             # Step 4: Submission & Validation
             # -------------------------
-if st.button("Submit Match Data"):
+    if st.button("Submit Match Data"):
     # Validation: Ensure that within each category (top and bottom) the same player-team combination is not assigned more than once.
-    top_assignments = [(entry["player"], entry["team"]) for entry in top_rankings]
-    bottom_assignments = [(entry["player"], entry["team"]) for entry in bottom_rankings]
-    if len(set(top_assignments)) != len(top_assignments):
-        st.error("Duplicate assignment found in Top Rankings. Please ensure each assignment is unique.")
-    elif len(set(bottom_assignments)) != len(bottom_assignments):
-        st.error("Duplicate assignment found in Bottom Rankings. Please ensure each assignment is unique.")
-    else:
-        # -------------------------
-        # Step 5: Compute Rewards and Save Data
-        # -------------------------
-        entry_fee = 50
-        total_prize_pool = total_teams * entry_fee
-        half_prize = total_prize_pool / 2
-        ratio = 0.5
-        top_count = bottom_count = math.ceil(total_teams / 4)
-        
-        # For your reward calculation, you are using a custom reward_list.
-        reward_list = []
-        for i in range(top_count):
-            temp = (total_teams - i) ** 2   # using ^ is bitwise XOR in Python, so changed to ** for exponentiation
-            reward_list.append(temp)
-        
-        now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        rows = []
-        # Process Top Rankings
-        for entry in top_rankings:
-            wt = reward_list[entry["rank"] - 1] / sum(reward_list)
-            reward = total_prize_pool * wt * 0.5
-            rows.append({
-                "match_id": match_id,
-                "update_date": now_str,
-                "player": entry["player"],
-                "team_index": entry["team"],
-                "category": "top",
-                "rank": entry["rank"],
-                "reward": round(reward, 2),
-                "entry_fee": entry_fee,
-                "net_earning": round(reward - entry_fee, 2)
-            })
-        # Process Bottom Rankings
-        for entry in bottom_rankings:
-            wt = reward_list[entry["rank"] - 1] / sum(reward_list)
-            reward = total_prize_pool * wt * 0.5
-            rows.append({
-                "match_id": match_id,
-                "update_date": now_str,
-                "player": entry["player"],
-                "team_index": entry["team"],
-                "category": "bottom",
-                "rank": entry["rank"],
-                "reward": round(reward, 2),
-                "entry_fee": entry_fee,
-                "net_earning": round(reward - entry_fee, 2)
-            })
-        # -------------------------
-        # Add Non-Ranked Teams
-        # -------------------------
-        # Build sets of assigned teams for top and bottom
-        assigned_top = set(top_assignments)
-        assigned_bottom = set(bottom_assignments)
-        non_rows = []
-        for player in selected_players:
-            for team_index in range(1, team_counts[player] + 1):
-                if (player, team_index) not in assigned_top and (player, team_index) not in assigned_bottom:
-                    non_rows.append({
-                        "match_id": match_id,
-                        "update_date": now_str,
-                        "player": player,
-                        "team_index": team_index,
-                        "category": "non",
-                        "rank": "No Win",
-                        "reward": 0,
-                        "entry_fee": entry_fee,
-                        "net_earning": -entry_fee
-                    })
-        # Combine ranked and non-ranked rows.
-        all_rows = rows + non_rows
-        
-        new_df = pd.DataFrame(all_rows)
-        save_match_data(new_df)
-        st.success("Match data saved successfully!")
-        st.write("### Match Data Summary")
-        st.dataframe(new_df)
+        top_assignments = [(entry["player"], entry["team"]) for entry in top_rankings]
+        bottom_assignments = [(entry["player"], entry["team"]) for entry in bottom_rankings]
+        if len(set(top_assignments)) != len(top_assignments):
+            st.error("Duplicate assignment found in Top Rankings. Please ensure each assignment is unique.")
+        elif len(set(bottom_assignments)) != len(bottom_assignments):
+            st.error("Duplicate assignment found in Bottom Rankings. Please ensure each assignment is unique.")
+        else:
+            # -------------------------
+            # Step 5: Compute Rewards and Save Data
+            # -------------------------
+            entry_fee = 50
+            total_prize_pool = total_teams * entry_fee
+            half_prize = total_prize_pool / 2
+            ratio = 0.5
+            top_count = bottom_count = math.ceil(total_teams / 4)
+            
+            # For your reward calculation, you are using a custom reward_list.
+            reward_list = []
+            for i in range(top_count):
+                temp = (total_teams - i) ** 2   # using ^ is bitwise XOR in Python, so changed to ** for exponentiation
+                reward_list.append(temp)
+            
+            now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            rows = []
+            # Process Top Rankings
+            for entry in top_rankings:
+                wt = reward_list[entry["rank"] - 1] / sum(reward_list)
+                reward = total_prize_pool * wt * 0.5
+                rows.append({
+                    "match_id": match_id,
+                    "update_date": now_str,
+                    "player": entry["player"],
+                    "team_index": entry["team"],
+                    "category": "top",
+                    "rank": entry["rank"],
+                    "reward": round(reward, 2),
+                    "entry_fee": entry_fee,
+                    "net_earning": round(reward - entry_fee, 2)
+                })
+            # Process Bottom Rankings
+            for entry in bottom_rankings:
+                wt = reward_list[entry["rank"] - 1] / sum(reward_list)
+                reward = total_prize_pool * wt * 0.5
+                rows.append({
+                    "match_id": match_id,
+                    "update_date": now_str,
+                    "player": entry["player"],
+                    "team_index": entry["team"],
+                    "category": "bottom",
+                    "rank": entry["rank"],
+                    "reward": round(reward, 2),
+                    "entry_fee": entry_fee,
+                    "net_earning": round(reward - entry_fee, 2)
+                })
+            # -------------------------
+            # Add Non-Ranked Teams
+            # -------------------------
+            # Build sets of assigned teams for top and bottom
+            assigned_top = set(top_assignments)
+            assigned_bottom = set(bottom_assignments)
+            non_rows = []
+            for player in selected_players:
+                for team_index in range(1, team_counts[player] + 1):
+                    if (player, team_index) not in assigned_top and (player, team_index) not in assigned_bottom:
+                        non_rows.append({
+                            "match_id": match_id,
+                            "update_date": now_str,
+                            "player": player,
+                            "team_index": team_index,
+                            "category": "non",
+                            "rank": "No Win",
+                            "reward": 0,
+                            "entry_fee": entry_fee,
+                            "net_earning": -entry_fee
+                        })
+            # Combine ranked and non-ranked rows.
+            all_rows = rows + non_rows
+            
+            new_df = pd.DataFrame(all_rows)
+            save_match_data(new_df)
+            st.success("Match data saved successfully!")
+            st.write("### Match Data Summary")
+            st.dataframe(new_df)
 
 # -------------------------------
 # Page 2: View Cumulative Earnings
@@ -356,7 +356,7 @@ elif page == "View Cumulative Earnings":
 # -------------------------------
 # Page 3: Manage Match Data
 # -------------------------------
-elif page == "Manage Match Data":
+elif page == "Delete Wrong Entry":
     st.title("Manage Match Data")
     df = load_data()
     st.dataframe(load_data())
