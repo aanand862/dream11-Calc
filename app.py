@@ -359,22 +359,28 @@ elif page == "View Cumulative Earnings":
 elif page == "Delete Wrong Entry":
     st.title("Manage Match Data")
     df = load_data()
-    st.dataframe(load_data())
     if df.empty:
         st.write("No match data available to manage.")
     else:
-        st.write("Select one or more Match IDs to delete from the records:")
-        unique_matches = df['match_id'].unique().tolist()
-        match_to_delete = st.multiselect("Select Match IDs to delete", unique_matches)
-
+        st.dataframe(df)
+        st.write("Select one or more entries (based on match_id and update_date) to delete:")
+        # Create a composite key for deletion (do not modify original df)
+        df_temp = df.copy()
+        df_temp["entry_id"] = df_temp["match_id"] + " | " + df_temp["update_date"]
+        unique_entries = df_temp["entry_id"].unique().tolist()
+        entries_to_delete = st.multiselect("Select entries to delete", unique_entries)
+        
         if st.button("Delete Selected Match Data"):
-            if not match_to_delete:
-                st.error("Please select at least one match ID to delete.")
+            if not entries_to_delete:
+                st.error("Please select at least one entry to delete.")
             else:
-                # Filter out the selected match IDs
-                updated_df = df[~df['match_id'].isin(match_to_delete)]
+                # Filter out rows with matching composite keys.
+                updated_df = df_temp[~df_temp["entry_id"].isin(entries_to_delete)]
+                # Drop the composite column before saving back.
+                updated_df = updated_df.drop(columns=["entry_id"])
                 update_data(updated_df)
-                del_df = df[df['match_id'].isin(match_to_delete)]
+                # Get the deleted rows for display.
+                del_df = df_temp[df_temp["entry_id"].isin(entries_to_delete)].drop(columns=["entry_id"])
                 st.success("Selected match data deleted successfully!")
-                st.write("### Below is deleted data : ")
+                st.write("### Below is deleted data:")
                 st.dataframe(del_df)
