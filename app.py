@@ -10,8 +10,8 @@ if 'authenticated' not in st.session_state:
     st.session_state.authenticated = False
 
 if not st.session_state.authenticated:
-    st.title("Private Access")
-    code = st.text_input("Enter the private 4-digit code", type="password")
+    st.title("Validate Credential (Shared in Whatsapp group)")
+    code = st.text_input("Enter the passcode", type="password")
     if st.button("Enter"):
         if code == "0007":
             st.session_state.authenticated = True
@@ -256,6 +256,7 @@ elif page == "View Cumulative Earnings":
 elif page == "Manage Match Data":
     st.title("Manage Match Data")
     df = load_data()
+    st.dataframe(load_data())
     if df.empty:
         st.write("No match data available to manage.")
     else:
@@ -270,6 +271,7 @@ elif page == "Manage Match Data":
                 # Filter out the selected match IDs
                 updated_df = df[~df['match_id'].isin(match_to_delete)]
                 update_data(updated_df)
+                del_df = df[df['match_id'].isin(match_to_delete)]
                 st.success("Selected match data deleted successfully!")
-                st.write("### Updated Match Data")
-                st.dataframe(updated_df)
+                st.write("### Below is deleted data : ")
+                st.dataframe(del_df)
