@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import os
 from datetime import datetime
+import math 
 
 # -------------------------------
 # Private Access Authentication
@@ -157,84 +158,137 @@ if page == "Enter Match Data":
     st.title("Enter Match Data")
     st.write("Fill in today's match details below.")
 
-    # Select a match from the predefined list
+    # -------------------------
+    # Step 1: Basic Inputs
+    # -------------------------
+    # Choose a match from the predefined list.
     match_id = st.selectbox("Select Match", match_list)
     
-    # Collect the players who participated
+    # Select the players who participated.
     selected_players = st.multiselect("Select players who played", players_list)
-    team_data = []  # List to accumulate one entry per team
-
+    
+    # For each selected player, ask for the number of teams they played.
+    team_counts = {}
     if selected_players:
-        # Determine number of winning positions per half based on number of players.
-        # (i.e., available winning ranks will be top1...top{k} and bottom1...bottom{k})
-        k = len(selected_players) // 2
-        if k == 0:
-            st.warning("Please select at least 2 players to have valid winning positions.")
+        st.markdown("### Step 1: Enter Number of Teams for Each Player")
+        for player in selected_players:
+            team_counts[player] = st.number_input(
+                f"Number of teams for **{player}**", min_value=0, value=1, step=1, key=f"num_{player}"
+            )
+        
+        # Compute total teams across all players.
+        total_teams = sum(team_counts[player] for player in selected_players)
+        st.write(f"Total teams in this match: **{total_teams}**")
+        
+        if total_teams < 3:
+            st.warning("Not enough teams to assign winners. At least 4 teams are required.")
         else:
-            # Create winning options and include them in the rank options.
-            winning_options = [f"top{i}" for i in range(1, k+1)] + [f"bottom{i}" for i in range(1, k+1)]
-            rank_options = ["No Win"] + winning_options
-
-            # For each player, get the number of teams and display a row of rank selectboxes.
-            for player in selected_players:
-                st.markdown(f"### {player}")
-                num_teams = st.number_input(f"Number of teams for {player}", min_value=0, value=1, step=1, key=f"num_teams_{player}")
-                if num_teams > 0:
-                    st.write("Select rank for each team:")
-                    cols = st.columns(int(num_teams))
-                    for i in range(int(num_teams)):
-                        with cols[i]:
-                            sel = st.selectbox(f"Team {i+1}", options=rank_options, key=f"rank_{player}_{i+1}")
-                            team_data.append({
-                                "player": player,
-                                "team_index": i + 1,
-                                "rank": sel
-                            })
-
+            # Determine number of winning positions.
+            # Total winners = total_teams/2, split equally: top_count = bottom_count = total_teams/4.
+            
+            top_count = bottom_count = math.ceil(total_teams / 4)
+                
+            st.write(f"Number of Top Winners: **{top_count}**")
+            st.write(f"Number of Bottom Winners: **{bottom_count}**")
+            
+            # -------------------------
+            # Step 2: Top Ranking Assignment
+            # -------------------------
+            st.markdown("### Step 2: Assign Top Rankings")
+            st.write(f"For each Top Rank (1 to {top_count}), select a player and then choose one of that player's teams.")
+            top_rankings = []
+            for i in range(1, top_count + 1):
+                col1, col2 = st.columns(2)
+                with col1:
+                    top_player = st.selectbox(
+                        f"Top Rank {i} - Select Player", options=selected_players, key=f"top_player_{i}"
+                    )
+                with col2:
+                    available_teams = list(range(1, team_counts[top_player] + 1))
+                    top_team = st.selectbox(
+                        f"Top Rank {i} - Select Team", options=available_teams, key=f"top_team_{i}"
+                    )
+                top_rankings.append({
+                    "rank": i,
+                    "player": top_player,
+                    "team": top_team
+                })
+            
+            # -------------------------
+            # Step 3: Bottom Ranking Assignment
+            # -------------------------
+            st.markdown("### Step 3: Assign Bottom Rankings")
+            st.write(f"For each Bottom Rank (1 to {bottom_count}), select a player and then choose one of that player's teams.")
+            bottom_rankings = []
+            for i in range(1, bottom_count + 1):
+                col1, col2 = st.columns(2)
+                with col1:
+                    bottom_player = st.selectbox(
+                        f"Bottom Rank {i} - Select Player", options=selected_players, key=f"bottom_player_{i}"
+                    )
+                with col2:
+                    available_teams = list(range(1, team_counts[bottom_player] + 1))
+                    bottom_team = st.selectbox(
+                        f"Bottom Rank {i} - Select Team", options=available_teams, key=f"bottom_team_{i}"
+                    )
+                bottom_rankings.append({
+                    "rank": i,
+                    "player": bottom_player,
+                    "team": bottom_team
+                })
+            
+            # -------------------------
+            # Step 4: Submission & Validation
+            # -------------------------
             if st.button("Submit Match Data"):
-                # Validation: Every winning rank (i.e. every rank in winning_options)
-                # must be assigned exactly once.
-                assigned_winning_ranks = [entry["rank"] for entry in team_data if entry["rank"] != "No Win"]
-                missing = [r for r in winning_options if assigned_winning_ranks.count(r) == 0]
-                duplicated = [r for r in winning_options if assigned_winning_ranks.count(r) > 1]
-                if missing or duplicated:
-                    err_msg = ""
-                    if missing:
-                        err_msg += "Missing winning rank assignments for: " + ", ".join(missing) + ". "
-                    if duplicated:
-                        err_msg += "Duplicated winning rank assignments for: " + ", ".join(duplicated) + "."
-                    st.error(err_msg)
+                # Validation: Ensure that within each category (top and bottom) the same player-team combination is not assigned more than once.
+                top_assignments = [(entry["player"], entry["team"]) for entry in top_rankings]
+                bottom_assignments = [(entry["player"], entry["team"]) for entry in bottom_rankings]
+                if len(set(top_assignments)) != len(top_assignments):
+                    st.error("Duplicate assignment found in Top Rankings. Please ensure each assignment is unique.")
+                elif len(set(bottom_assignments)) != len(bottom_assignments):
+                    st.error("Duplicate assignment found in Bottom Rankings. Please ensure each assignment is unique.")
                 else:
-                    # Calculate the total teams, entry fee and total prize pool
-                    total_teams = len(team_data)
+                    # -------------------------
+                    # Step 5: Compute Rewards and Save Data
+                    # -------------------------
                     entry_fee = 50
                     total_prize_pool = total_teams * entry_fee
                     half_prize = total_prize_pool / 2
-
-                    # For geometric progression: common ratio r = 0.5.
                     ratio = 0.5
-                    # Calculate the first term so that the sum of rewards for each half equals half_prize.
-                    first_term = half_prize * (1 - ratio) / (1 - ratio ** k)
-
-                    # Capture the current date and time.
-                    now_t = datetime.now()
-                    formatted_datetime = now_t.strftime("%Y-%m-%d %H:%M:%S")
+                    # Calculate geometric progression first term for top and bottom categories.
+                    first_term_top = half_prize * (1 - ratio) / (1 - ratio ** top_count)
+                    first_term_bottom = half_prize * (1 - ratio) / (1 - ratio ** bottom_count)
                     
+                    now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     rows = []
-                    for entry in team_data:
-                        reward = get_reward(entry["rank"], first_term, ratio)
-                        net = reward - entry_fee
+                    for entry in top_rankings:
+                        reward = first_term_top * (ratio ** (entry["rank"] - 1))
                         rows.append({
                             "match_id": match_id,
-                            "update_date": formatted_datetime,
+                            "update_date": now_str,
                             "player": entry["player"],
-                            "team_index": entry["team_index"],
+                            "team_index": entry["team"],
+                            "category": "top",
                             "rank": entry["rank"],
                             "reward": round(reward, 2),
                             "entry_fee": entry_fee,
-                            "net_earning": round(net, 2)
+                            "net_earning": round(reward - entry_fee, 2)
                         })
-
+                    for entry in bottom_rankings:
+                        reward = first_term_bottom * (ratio ** (entry["rank"] - 1))
+                        rows.append({
+                            "match_id": match_id,
+                            "update_date": now_str,
+                            "player": entry["player"],
+                            "team_index": entry["team"],
+                            "category": "bottom",
+                            "rank": entry["rank"],
+                            "reward": round(reward, 2),
+                            "entry_fee": entry_fee,
+                            "net_earning": round(reward - entry_fee, 2)
+                        })
+                    
                     new_df = pd.DataFrame(rows)
                     save_match_data(new_df)
                     st.success("Match data saved successfully!")
