@@ -13,17 +13,93 @@ if not st.session_state.authenticated:
     st.title("Private Access")
     code = st.text_input("Enter the private 4-digit code", type="password")
     if st.button("Enter"):
-        if code == "1234":
+        if code == "0007":
             st.session_state.authenticated = True
             st.success("Access Granted!")
         else:
             st.error("Incorrect code. Please try again.")
     st.stop()
 
+match_list = [
+    "22-Mar-25 : KKR Vs RCB",
+    "23-Mar-25 : SRH Vs RR",
+    "23-Mar-25 : CSK Vs MI",
+    "24-Mar-25 : DC Vs LSG",
+    "25-Mar-25 : GT Vs PK",
+    "26-Mar-25 : RR Vs KKR",
+    "27-Mar-25 : SRH Vs LSG",
+    "28-Mar-25 : CSK Vs RCB",
+    "29-Mar-25 : GT Vs MI",
+    "30-Mar-25 : DC Vs SRH",
+    "30-Mar-25 : RR Vs CSK",
+    "31-Mar-25 : MI Vs KKR",
+    "01-Apr-25 : LSG Vs PK",
+    "02-Apr-25 : RCB Vs GT",
+    "03-Apr-25 : KKR Vs SRH",
+    "04-Apr-25 : LSG Vs MI",
+    "05-Apr-25 : CSK Vs DC",
+    "05-Apr-25 : PK Vs RR",
+    "06-Apr-25 : KKR Vs LSG",
+    "06-Apr-25 : SRH Vs GT",
+    "07-Apr-25 : MI Vs RCB",
+    "08-Apr-25 : PK Vs CSK",
+    "09-Apr-25 : GT Vs RR",
+    "10-Apr-25 : RCB Vs DC",
+    "11-Apr-25 : CSK Vs KKR",
+    "12-Apr-25 : LSG Vs GT",
+    "12-Apr-25 : SRH Vs PK",
+    "13-Apr-25 : RR Vs RCB",
+    "13-Apr-25 : DC Vs MI",
+    "14-Apr-25 : LSG Vs CSK",
+    "15-Apr-25 : PK Vs KKR",
+    "16-Apr-25 : DC Vs RR",
+    "17-Apr-25 : MI Vs SRH",
+    "18-Apr-25 : RCB Vs PK",
+    "19-Apr-25 : GT Vs DC",
+    "19-Apr-25 : RR Vs LSG",
+    "20-Apr-25 : PK Vs RCB",
+    "20-Apr-25 : MI Vs CSK",
+    "21-Apr-25 : KKR Vs GT",
+    "22-Apr-25 : LSG Vs DC",
+    "23-Apr-25 : SRH Vs MI",
+    "24-Apr-25 : RCB Vs RR",
+    "25-Apr-25 : CSK Vs SRH",
+    "26-Apr-25 : KKR Vs PK",
+    "27-Apr-25 : MI Vs LSG",
+    "27-Apr-25 : DC Vs RCB",
+    "28-Apr-25 : RR Vs GT",
+    "29-Apr-25 : DC Vs KKR",
+    "30-Apr-25 : CSK Vs PK",
+    "01-May-25 : RR Vs MI",
+    "02-May-25 : GT Vs SRH",
+    "03-May-25 : RCB Vs CSK",
+    "04-May-25 : KKR Vs RR",
+    "04-May-25 : PK Vs LSG",
+    "05-May-25 : SRH Vs DC",
+    "06-May-25 : MI Vs GT",
+    "07-May-25 : KKR Vs CSK",
+    "08-May-25 : PK Vs DC",
+    "09-May-25 : LSG Vs RCB",
+    "10-May-25 : SRH Vs KKR",
+    "11-May-25 : PK Vs MI",
+    "11-May-25 : DC Vs GT",
+    "12-May-25 : CSK Vs RR",
+    "13-May-25 : RCB Vs SRH",
+    "14-May-25 : GT Vs LSG",
+    "15-May-25 : MI Vs DC",
+    "16-May-25 : RR Vs PK",
+    "17-May-25 : RCB Vs KKR",
+    "18-May-25 : GT Vs CSK",
+    "18-May-25 : LSG Vs SRH",
+    "20-May-25 : Qualifier 1",
+    "21-May-25 : Eliminator",
+    "23-May-25 : Qualifier 2",
+    "25-May-25 : Final"
+]
 # -------------------------------
 # Preconfigured players list
 # -------------------------------
-players_list = ["Alice", "Bob", "Charlie", "David", "Eva", "Frank"]
+players_list = ["Abh", "JJ", "Mait", "Ash", "Arp", "Gan","Goy","Sam","Ank"]
 
 # File to store match data persistently
 DATA_FILE = "match_data.csv"
@@ -83,8 +159,8 @@ if page == "Enter Match Data":
 
     # Use current timestamp as default match id (or you can let users type an identifier)
     default_match_id = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    match_id = st.text_input("Match ID (e.g. date/time)", value=default_match_id)
-
+    #match_id = st.text_input("Match ID (e.g. date/time)", value=default_match_id)
+    match_id = st.selectbox("Select Match",match_list )
     # Select the players that participated in this match
     selected_players = st.multiselect("Select players who played", players_list)
 
