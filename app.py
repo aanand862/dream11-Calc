@@ -256,6 +256,9 @@ elif page == "View Cumulative Earnings":
         view_match = st.multiselect("Select one/more match",unique_matches1,default= unique_matches1[0])
         df1 = df[df['match_id'].isin(view_match)]
         st.dataframe(df1)
+        # Download button
+        df_csv = df.to_csv(index=False).encode('utf-8')
+        st.download_button(label="📥 Download All Match data ",data=df_csv ,file_name="All_Match_Data.csv",mime="text/csv")
 
 # -------------------------------
 # Page 3: Manage Match Data
