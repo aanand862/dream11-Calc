@@ -6,7 +6,7 @@ from datetime import datetime
 # -------------------------------
 # Preconfigured players list
 # -------------------------------
-players_list = ["Anand", "JJ", "Maity", "Ashutosh", "Arpan", "Ganesh"]
+players_list = ["Abh", "JJ", "Mait", "Ash", "Arp", "Gan","Goy","Sam","Ank"]
 
 # File to store match data persistently
 DATA_FILE = "match_data.csv"
