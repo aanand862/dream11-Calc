@@ -249,6 +249,7 @@ if page == "Enter Match Data":
             # -------------------------
             # Step 4: Submission & Validation
             # -------------------------
+
     if st.button("Submit Match Data"):
         # Validate that every top and bottom rank is assigned a team.
         unassigned_top = [rank for rank, team in top_rankings.items() if team == "Select a team"]
@@ -258,13 +259,16 @@ if page == "Enter Match Data":
         elif unassigned_bottom:
             st.error(f"Please assign a team for Bottom Rank(s): {unassigned_bottom}")
         else:
-        # Validate uniqueness across each category.
+            # Validate uniqueness across each category.
             top_values = list(top_rankings.values())
             bottom_values = list(bottom_rankings.values())
             if len(set(top_values)) != len(top_values):
                 st.error("Duplicate team assignment found in Top Rankings. Please ensure each assignment is unique.")
             elif len(set(bottom_values)) != len(bottom_values):
                 st.error("Duplicate team assignment found in Bottom Rankings. Please ensure each assignment is unique.")
+            # Additional validation: a single team should not be assigned multiple ranks across categories.
+            elif len(set(top_values + bottom_values)) != len(top_values + bottom_values):
+                st.error("A single team has been assigned multiple ranks. Please assign each team only once.")
             else:
                 # -------------------------
                 # Step 5: Compute Rewards and Save Data
@@ -281,7 +285,7 @@ if page == "Enter Match Data":
                 now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 rows = []
                 for rank, team_str in top_rankings.items():
-                    # Expected format: "Player - Team X"
+                    # Expected format: "Player - T X"
                     try:
                         player, team_part = team_str.split(" - T ")
                         team_index = int(team_part)
@@ -300,50 +304,52 @@ if page == "Enter Match Data":
                                 "reward": round(reward, 2),
                                 "entry_fee": entry_fee,
                                 "net_earning": round(reward - entry_fee, 2)})
-                    # Process Bottom Rankings
-                    for rank, team_str in bottom_rankings.items():
-                        try:
-                            player, team_part = team_str.split(" - T ")
-                            team_index = int(team_part)
-                        except Exception as e:
-                            st.error(f"Error parsing team info for Bottom Rank {rank}: {team_str}")
-                            st.stop()
-                        wt = reward_list[rank - 1] / sum(reward_list)
-                        reward = total_prize_pool * wt * 0.5
-                        rows.append({
-                                "match_id": match_id,
-                                "update_date": now_str,
-                                "player": player,
-                                "team_index": team_index,
-                                "category": "bottom",
-                                "rank": rank,
-                                "reward": round(reward, 2),
-                                "entry_fee": entry_fee,
-                                "net_earning": round(reward - entry_fee, 2)})
-                        
-                    ranked_teams = set(list(top_rankings.values()) + list(bottom_rankings.values()))
-                    non_rows = []
-                    for player in selected_players:
-                        for team_index in range(1, team_counts[player] + 1):
-                            team_str = f"{player} - T {team_index}"
-                            if team_str not in ranked_teams:
-                               non_rows.append({
-                                        "match_id": match_id,
-                                        "update_date": now_str,
-                                        "player": player,
-                                        "team_index": team_index,
-                                        "category": "non",
-                                        "rank": "No Win",
-                                        "reward": 0,
-                                        "entry_fee": entry_fee,
-                                        "net_earning": -entry_fee})
-                    all_rows = rows + non_rows
-                        
-                    new_df = pd.DataFrame(all_rows)
-                    save_match_data(new_df)
-                    st.success("Match data saved successfully!")
-                    st.write("### Match Data Summary")
-                    st.dataframe(new_df)
+                # Process Bottom Rankings
+                for rank, team_str in bottom_rankings.items():
+                    try:
+                        player, team_part = team_str.split(" - T ")
+                        team_index = int(team_part)
+                    except Exception as e:
+                        st.error(f"Error parsing team info for Bottom Rank {rank}: {team_str}")
+                        st.stop()
+                    wt = reward_list[rank - 1] / sum(reward_list)
+                    reward = total_prize_pool * wt * 0.5
+                    rows.append({
+                            "match_id": match_id,
+                            "update_date": now_str,
+                            "player": player,
+                            "team_index": team_index,
+                            "category": "bottom",
+                            "rank": rank,
+                            "reward": round(reward, 2),
+                            "entry_fee": entry_fee,
+                            "net_earning": round(reward - entry_fee, 2)})
+                
+                ranked_teams = set(list(top_rankings.values()) + list(bottom_rankings.values()))
+                non_rows = []
+                for player in selected_players:
+                    for team_index in range(1, team_counts[player] + 1):
+                        team_str = f"{player} - T {team_index}"
+                        if team_str not in ranked_teams:
+                            non_rows.append({
+                                    "match_id": match_id,
+                                    "update_date": now_str,
+                                    "player": player,
+                                    "team_index": team_index,
+                                    "category": "non",
+                                    "rank": "No Win",
+                                    "reward": 0,
+                                    "entry_fee": entry_fee,
+                                    "net_earning": -entry_fee})
+                all_rows = rows + non_rows
+                
+                new_df = pd.DataFrame(all_rows)
+                save_match_data(new_df)
+                st.success("Match data saved successfully!")
+                st.write("### Match Data Summary")
+                st.dataframe(new_df)
+
+
 # -------------------------------
 # Page 2: View Cumulative Earnings
 # -------------------------------
