@@ -362,10 +362,11 @@ elif page == "View Cumulative Earnings":
         # Sum net earnings per player over all matches
         cum = df.groupby("player")["net_earning"].sum().reset_index()
         cum = cum.rename(columns={"net_earning": "Cumulative Earnings (Rs.)"})
-        st.write("### Earnings per Player")
+        st.write("### Ab Tak Ka hisab : ")
         cum = cum.set_index("player")
         #cum = pd.to_numeric(cum["Cumulative Earnings (Rs.)"])
         #st.bar_chart(cum)
+        cum = cum.sort_values(by="Cumulative Earnings (Rs.)", ascending=False)
         st.dataframe(cum)
 
         st.write("### View Match Data")
