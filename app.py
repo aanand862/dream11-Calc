@@ -11,8 +11,8 @@ if 'authenticated' not in st.session_state:
     st.session_state.authenticated = False
 
 if not st.session_state.authenticated:
-    st.title("Validate Credential (Shared in Whatsapp group)")
-    code = st.text_input("Enter the passcode", type="password")
+    st.title("Aapki Pahchan ho jae ? ")
+    code = st.text_input("Passcode Daliye (Whatsapp me share kia gaya h):", type="password")
     if st.button("Enter"):
         if code == "0007":
             st.session_state.authenticated = True
@@ -146,10 +146,27 @@ def get_reward(rank_str, first_term, ratio):
     except Exception as e:
         return 0
 
+#To handle default value of select match
+def get_match_date(match_str):
+    # Extract date part from a string like "22-Mar-25 : KKR Vs RCB"
+    date_part = match_str.split(" : ")[0]
+    return datetime.strptime(date_part, "%d-%b-%y").date()
+
+today_date = datetime.today().date()
+# Filter matches whose date is today or in the future
+future_matches = [m for m in match_list if get_match_date(m) >= today_date]
+if future_matches:
+    # Sort by date and choose the earliest
+    default_match = sorted(future_matches, key=get_match_date)[0]
+else:
+    default_match = match_list[0]
+
+
 # -------------------------------
 # Sidebar Navigation
 # -------------------------------
-page = st.sidebar.selectbox("Navigation", ["Enter Match Data", "View Cumulative Earnings", "Delete Wrong Entry"])
+#page = st.sidebar.selectbox("Navigation", ["Enter Match Data", "View Cumulative Earnings", "Delete Wrong Entry"])
+page = st.sidebar.radio("Navigation", ["Enter Match Data", "View Cumulative Earnings", "Delete Wrong Entry"])
 
 # -------------------------------
 # Page 1: Enter Match Data
@@ -162,7 +179,14 @@ if page == "Enter Match Data":
     # Step 1: Basic Inputs
     # -------------------------
     # Choose a match from the predefined list.
-    match_id = st.selectbox("Select Match", match_list)
+    #match_id = st.selectbox("Select Match", match_list)
+    # Use the default_match to set the default index in the selectbox.
+    match_id = st.selectbox("Select Match", match_list, index=match_list.index(default_match))
+    # Check if an entry for the selected match is already present
+    existing_df = load_data()
+    if not existing_df.empty and match_id in existing_df["match_id"].unique():
+        st.error(f"Entry is already done for match '{match_id}'. You cannot reenter match data for this match.")
+        st.stop()
     
     # Select the players who participated.
     selected_players = st.multiselect("Select players who played", players_list)
