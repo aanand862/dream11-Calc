@@ -4,6 +4,20 @@ import os
 from datetime import datetime
 import math 
 
+
+# Hide default Streamlit elements
+hide_streamlit_style = """
+<style>
+/* Hide the default Streamlit hamburger menu */
+#MainMenu {visibility: hidden;}
+/* Hide the “Made with Streamlit” footer */
+footer {visibility: hidden;}
+/* Hide the Streamlit header */
+header {visibility: hidden;}
+</style>
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 # -------------------------------
 # Private Access Authentication
 # -------------------------------
