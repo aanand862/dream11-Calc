@@ -3,7 +3,7 @@ import pandas as pd
 import os
 from datetime import datetime
 import math 
-
+from github import Github
 
 # Hide default Streamlit elements
 hide_streamlit_style = """
