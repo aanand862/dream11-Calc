@@ -9,7 +9,6 @@ import math
 from io import StringIO
 from github import Github
 
-
 # Hide default Streamlit elements
 hide_streamlit_style = """
 <style>
@@ -139,7 +138,7 @@ def load_data():
 
 def save_match_data(new_data):
     # Replace 'YOUR_TOKEN' with your GitHub personal access token
-    g_token = "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"
+    g_token = st.secrets['gt_token']
     g = Github(g_token)
 
     # Replace 'username/repo_name' with your repository identifier
@@ -162,7 +161,7 @@ def save_match_data(new_data):
         new_data.to_csv(DATA_FILE, index=False)
 
 def update_data(df):
-    g_token = "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"
+    g_token = st.secrets['gt_token']
     g = Github(g_token)
 
     # Replace 'username/repo_name' with your repository identifier
