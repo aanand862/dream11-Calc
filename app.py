@@ -135,8 +135,8 @@ def load_data():
 
 def save_match_data(new_data):
     # Replace 'YOUR_TOKEN' with your GitHub personal access token
-    g_token = st.secrets['gt_token']
-    g = Github(g_token)
+    gt_token = st.secrets["gt_token"]
+    g = Github(gt_token)
 
     # Replace 'username/repo_name' with your repository identifier
     repo = g.get_repo("aanand862/dream11-Calc")
@@ -163,8 +163,8 @@ def save_match_data(new_data):
         new_data.to_csv(DATA_FILE, index=False)
 
 def update_data(df):
-    g_token = st.secrets['gt_token']
-    g = Github(g_token)
+    gt_token = st.secrets['gt_token']
+    g = Github(gt_token)
 
     # Replace 'username/repo_name' with your repository identifier
     repo = g.get_repo("aanand862/dream11-Calc")
