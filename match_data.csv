@@ -1,1 +1,4 @@
-match_id,update_date,player,team_index,rank,reward,entry_fee,net_earning,category
+match_id,update_date,player,team_index,category,rank,reward,entry_fee,net_earning
+28-Mar-25 : CSK Vs RCB,2025-03-28 19:59:53,Mait,1,top,1,75.0,50,25.0
+28-Mar-25 : CSK Vs RCB,2025-03-28 19:59:53,JJ,1,bottom,1,75.0,50,25.0
+28-Mar-25 : CSK Vs RCB,2025-03-28 19:59:53,Abh,1,non,No Win,0.0,50,-50.0
