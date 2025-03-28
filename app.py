@@ -139,7 +139,7 @@ def load_data():
 
 def save_match_data(new_data):
     # Replace 'YOUR_TOKEN' with your GitHub personal access token
-    g_token = "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"
+    g_token = "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"
     g = Github(g_token)
 
     # Replace 'username/repo_name' with your repository identifier
@@ -162,7 +162,7 @@ def save_match_data(new_data):
         new_data.to_csv(DATA_FILE, index=False)
 
 def update_data(df):
-    g_token = "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"
+    g_token = "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"
     g = Github(g_token)
 
     # Replace 'username/repo_name' with your repository identifier
