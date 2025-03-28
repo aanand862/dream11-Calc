@@ -1,4 +1,4 @@
-!pip install PyGithub
+#!pip install PyGithub
 
 
 import streamlit as st
