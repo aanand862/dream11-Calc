@@ -142,19 +142,24 @@ def save_match_data(new_data):
     repo = g.get_repo("aanand862/dream11-Calc")
     # Define the path to your CSV file within the repo
     fl_path = "match_data.csv"
+    #df_temp = new_data.to_csv(index=False)
     
-    df_temp = new_data.to_csv(index=False)
     
-    # Get the file contents from the repo
-    file = repo.get_contents(fl_path)
-    commit_message = "Automated Update CSV file with new data"
-    repo.update_file(fl_path, commit_message, df_temp, file.sha)
 
     if os.path.exists(DATA_FILE):
         df = pd.read_csv(DATA_FILE)
         df = pd.concat([df, new_data], ignore_index=True)
+        df_temp = df.to_csv(index=False)
         df.to_csv(DATA_FILE, index=False)
+        # Get the file contents from the repo
+        file = repo.get_contents(fl_path)
+        commit_message = "Automated Update CSV file with new data"
+        repo.update_file(fl_path, commit_message, df_temp, file.sha)
     else:
+        df_temp = new_data.to_csv(index=False)
+        file = repo.get_contents(fl_path)
+        commit_message = "Automated Update CSV file with new data"
+        repo.update_file(fl_path, commit_message, df_temp, file.sha)
         new_data.to_csv(DATA_FILE, index=False)
 
 def update_data(df):
