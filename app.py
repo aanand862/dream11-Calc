@@ -6,6 +6,8 @@ import math
 from io import StringIO
 from github import Github
 
+st.write("Token loaded:", st.secrets["gt_token"][:4] + "..." + st.secrets["gt_token"][-4:])
+
 # Hide default Streamlit elements
 hide_streamlit_style = """
 <style>
