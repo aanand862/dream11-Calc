@@ -33,7 +33,7 @@ if not st.session_state.authenticated:
     st.title("User Authentication ")
     code = st.text_input("Enter Passcode (Whatsapp me share kia gaya h):", type="password")
     if st.button("Enter"):
-        if code == pass:
+        if code == st.secrets['pass']:
             st.session_state.authenticated = True
             st.success("Access Granted!")
         else:
