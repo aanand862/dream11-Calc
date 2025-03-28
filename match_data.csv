@@ -1,11 +1,4 @@
 match_id,update_date,player,team_index,rank,reward,entry_fee,net_earning,category
-22-Mar-25 : KKR Vs RCB,2025-03-23 14:43:26,Arp,1,1,100.88,50,50.88,top
-22-Mar-25 : KKR Vs RCB,2025-03-23 14:43:26,Ash,1,2,74.12,50,24.12,top
-22-Mar-25 : KKR Vs RCB,2025-03-23 14:43:26,Ash,2,1,100.88,50,50.88,bottom
-22-Mar-25 : KKR Vs RCB,2025-03-23 14:43:26,JJ,2,2,74.12,50,24.12,bottom
-22-Mar-25 : KKR Vs RCB,2025-03-23 14:43:26,Abh,1,No Win,0.0,50,-50.0,non
-22-Mar-25 : KKR Vs RCB,2025-03-23 14:43:26,Abh,2,No Win,0.0,50,-50.0,non
-22-Mar-25 : KKR Vs RCB,2025-03-23 14:43:26,JJ,1,No Win,0.0,50,-50.0,non
 23-Mar-25 : CSK Vs MI,2025-03-24 10:53:50,Ash,1,1,88.52,50,38.52,top
 23-Mar-25 : CSK Vs MI,2025-03-24 10:53:50,JJ,1,2,61.48,50,11.48,top
 23-Mar-25 : CSK Vs MI,2025-03-24 10:53:50,Ash,2,1,88.52,50,38.52,bottom
