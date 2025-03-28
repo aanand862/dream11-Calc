@@ -39,3 +39,11 @@ match_id,update_date,player,team_index,rank,reward,entry_fee,net_earning,categor
 23-Mar-25 : CSK Vs MI,2025-03-24 10:53:50,JJ,2,2,61.48,50,11.48,bottom
 23-Mar-25 : CSK Vs MI,2025-03-24 10:53:50,Arp,1,No Win,0.0,50,-50.0,non
 23-Mar-25 : CSK Vs MI,2025-03-24 10:53:50,Arp,2,No Win,0.0,50,-50.0,non
+24-Mar-25 : DC Vs LSG,2025-03-28 18:11:36,Mait,1,1,113.27,50,63.27,top
+24-Mar-25 : DC Vs LSG,2025-03-28 18:11:36,Abh,1,2,86.73,50,36.73,top
+24-Mar-25 : DC Vs LSG,2025-03-28 18:11:36,Ash,2,1,113.27,50,63.27,bottom
+24-Mar-25 : DC Vs LSG,2025-03-28 18:11:36,JJ,2,2,86.73,50,36.73,bottom
+24-Mar-25 : DC Vs LSG,2025-03-28 18:11:36,Abh,2,No Win,0.0,50,-50.0,non
+24-Mar-25 : DC Vs LSG,2025-03-28 18:11:36,JJ,1,No Win,0.0,50,-50.0,non
+24-Mar-25 : DC Vs LSG,2025-03-28 18:11:36,Mait,2,No Win,0.0,50,-50.0,non
+24-Mar-25 : DC Vs LSG,2025-03-28 18:11:36,Ash,1,No Win,0.0,50,-50.0,non
