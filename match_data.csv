@@ -86,9 +86,3 @@ match_id,update_date,player,team_index,rank,reward,entry_fee,net_earning,categor
 02-Apr-25 : RCB Vs GT,2025-03-29 15:50:40,Abh,1,1,75.0,50,25.0,top
 02-Apr-25 : RCB Vs GT,2025-03-29 15:50:40,JJ,1,1,75.0,50,25.0,bottom
 02-Apr-25 : RCB Vs GT,2025-03-29 15:50:40,Mait,1,No Win,0.0,50,-50.0,non
-29-Mar-25 : GT Vs MI,2025-03-29 10:22:01,Mait,1,1,88.52,50,38.52,top
-29-Mar-25 : GT Vs MI,2025-03-29 10:22:01,JJ,1,2,61.48,50,11.48,top
-29-Mar-25 : GT Vs MI,2025-03-29 10:22:01,Ash,1,1,88.52,50,38.52,bottom
-29-Mar-25 : GT Vs MI,2025-03-29 10:22:01,Ash,2,2,61.48,50,11.48,bottom
-29-Mar-25 : GT Vs MI,2025-03-29 10:22:01,Abh,1,No Win,0.0,50,-50.0,non
-29-Mar-25 : GT Vs MI,2025-03-29 10:22:01,JJ,2,No Win,0.0,50,-50.0,non
