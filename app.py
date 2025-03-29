@@ -420,7 +420,7 @@ if page == "Enter Match Data":
                 save_match_data(new_df)
                 st.success("Match data saved successfully!")
                 st.write("### Match Data Summary")
-                st.dataframe(new_df)
+                st.dataframe(match_agg(new_df))
 
 
 # -------------------------------
