@@ -135,6 +135,26 @@ def load_data():
         # Define an empty dataframe with the required columns
         return pd.DataFrame(columns=["match_id", "update_date","player", "team_index", "rank", "reward", "entry_fee", "net_earning"])
 
+#Aggregate match data 
+def match_agg(df1):
+    # Sample aggregation logic
+    df1['category_rank'] = df1['category'].astype(str) + "_" + df1['rank'].astype(str) 
+    agg_df = df1.groupby(['match_id', 'player', 'update_date']).agg(
+        {'team_index': 'count',
+        #'rank': lambda x: ', '.join(map(str, x)),
+        'reward': 'sum',
+        'entry_fee': 'sum',
+        'net_earning': 'sum',
+        'category_rank': lambda x: ', '.join(x)}).reset_index()
+    agg_df['net_earning%'] = (100 * agg_df['net_earning']/ agg_df['entry_fee']).apply(math.ceil)
+    
+    # Rename column for clarity
+    agg_df = agg_df.rename(columns={'team_index': 'No of Team'})
+    agg_df = agg_df.rename(columns={'entry_fee': 'total_entry_fee'})
+    agg_df = agg_df[["match_id","update_date","player","No of Team","total_entry_fee","reward","net_earning","net_earning%","category_rank"]]    
+    return agg_df
+
+
 def save_match_data(new_data):
     # Replace 'YOUR_TOKEN' with your GitHub personal access token
     gt_token = st.secrets["gt_token"]
@@ -144,9 +164,7 @@ def save_match_data(new_data):
     repo = g.get_repo("aanand862/dream11-Calc")
     # Define the path to your CSV file within the repo
     fl_path = "match_data.csv"
-    #df_temp = new_data.to_csv(index=False)
-    
-    
+    #df_temp = new_data.to_csv(index=False)    
 
     if os.path.exists(DATA_FILE):
         df = pd.read_csv(DATA_FILE)
@@ -428,7 +446,9 @@ elif page == "View Cumulative Earnings":
         unique_matches1 = df['match_id'].unique().tolist()
         view_match = st.multiselect("Select one/more match",unique_matches1,default= unique_matches1[0])
         df1 = df[df['match_id'].isin(view_match)]
-        st.dataframe(df1)
+        df_ag = match_agg(df1)
+        st.dataframe(df_ag)
+        
         # Download button
         df_csv = df.to_csv(index=False).encode('utf-8')
         st.download_button(label="📥 Download All Match data ",data=df_csv ,file_name="All_Match_Data.csv",mime="text/csv")
