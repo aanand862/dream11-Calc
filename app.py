@@ -21,6 +21,8 @@ header {visibility: hidden;}
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
+st.image("ipl_pic.png", use_container_width=True)
+
 # -------------------------------
 # Private Access Authentication
 # -------------------------------
