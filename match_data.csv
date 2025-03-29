@@ -83,3 +83,6 @@ match_id,update_date,player,team_index,rank,reward,entry_fee,net_earning,categor
 28-Mar-25 : CSK Vs RCB,2025-03-28 18:18:17,Ash,2,2,61.48,50,11.48,bottom
 28-Mar-25 : CSK Vs RCB,2025-03-28 18:18:17,JJ,1,No Win,0.0,50,-50.0,non
 28-Mar-25 : CSK Vs RCB,2025-03-28 18:18:17,Arp,1,No Win,0.0,50,-50.0,non
+29-Mar-25 : GT Vs MI,2025-03-29 15:44:02,JJ,1,1,75.0,50,25.0,top
+29-Mar-25 : GT Vs MI,2025-03-29 15:44:02,Mait,1,1,75.0,50,25.0,bottom
+29-Mar-25 : GT Vs MI,2025-03-29 15:44:02,Abh,1,No Win,0.0,50,-50.0,non
