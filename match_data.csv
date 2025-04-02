@@ -95,3 +95,7 @@ match_id,update_date,player,team_index,rank,reward,entry_fee,net_earning,categor
 01-Apr-25 : LSG Vs PK,2025-04-01 18:30:38,Abh,2,2,61.48,50,11.48,bottom
 01-Apr-25 : LSG Vs PK,2025-04-01 18:30:38,Ash,1,No Win,0.0,50,-50.0,non
 01-Apr-25 : LSG Vs PK,2025-04-01 18:30:38,Ash,2,No Win,0.0,50,-50.0,non
+02-Apr-25 : RCB Vs GT,2025-04-02 11:54:40,Abh,1,1,100.0,50,50.0,top
+02-Apr-25 : RCB Vs GT,2025-04-02 11:54:40,Abh,4,1,100.0,50,50.0,bottom
+02-Apr-25 : RCB Vs GT,2025-04-02 11:54:40,Abh,2,No Win,0.0,50,-50.0,non
+02-Apr-25 : RCB Vs GT,2025-04-02 11:54:40,Abh,3,No Win,0.0,50,-50.0,non
