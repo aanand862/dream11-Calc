@@ -110,3 +110,8 @@ match_id,update_date,player,team_index,rank,reward,entry_fee,net_earning,categor
 06-Apr-25 : SRH Vs GT,2025-04-06 17:46:26,Mait,2,No Win,0.0,50,-50.0,non
 06-Apr-25 : SRH Vs GT,2025-04-06 17:46:26,Mait,4,No Win,0.0,50,-50.0,non
 06-Apr-25 : SRH Vs GT,2025-04-06 17:46:26,Mait,5,No Win,0.0,50,-50.0,non
+10-Apr-25 : RCB Vs DC,2025-04-10 18:28:15,JJ,1,1,76.22,50,26.22,top
+10-Apr-25 : RCB Vs DC,2025-04-10 18:28:15,Ash,1,2,48.78,50,-1.22,top
+10-Apr-25 : RCB Vs DC,2025-04-10 18:28:15,JJ,2,1,76.22,50,26.22,bottom
+10-Apr-25 : RCB Vs DC,2025-04-10 18:28:15,Abh,1,2,48.78,50,-1.22,bottom
+10-Apr-25 : RCB Vs DC,2025-04-10 18:28:15,Ash,2,No Win,0.0,50,-50.0,non
