@@ -119,3 +119,11 @@ match_id,update_date,player,team_index,rank,reward,entry_fee,net_earning,categor
 11-Apr-25 : CSK Vs KKR,2025-04-12 02:42:15,JJ,1,1,100.0,50,50.0,bottom
 11-Apr-25 : CSK Vs KKR,2025-04-12 02:42:15,JJ,2,No Win,0.0,50,-50.0,non
 11-Apr-25 : CSK Vs KKR,2025-04-12 02:42:15,Ash,1,No Win,0.0,50,-50.0,non
+19-Apr-25 : RR Vs LSG,2025-04-20 13:34:44,Abh,1,1,113.27,50,63.27,top
+19-Apr-25 : RR Vs LSG,2025-04-20 13:34:44,Mait,1,2,86.73,50,36.73,top
+19-Apr-25 : RR Vs LSG,2025-04-20 13:34:44,Mait,2,1,113.27,50,63.27,bottom
+19-Apr-25 : RR Vs LSG,2025-04-20 13:34:44,Mait,3,2,86.73,50,36.73,bottom
+19-Apr-25 : RR Vs LSG,2025-04-20 13:34:44,JJ,1,No Win,0.0,50,-50.0,non
+19-Apr-25 : RR Vs LSG,2025-04-20 13:34:44,Mait,4,No Win,0.0,50,-50.0,non
+19-Apr-25 : RR Vs LSG,2025-04-20 13:34:44,Mait,5,No Win,0.0,50,-50.0,non
+19-Apr-25 : RR Vs LSG,2025-04-20 13:34:44,Mait,6,No Win,0.0,50,-50.0,non
